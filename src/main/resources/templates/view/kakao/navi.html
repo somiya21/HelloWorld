@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="layout/default">
+<body>
+	  <th:block layout:fragment="css">
+	  <style>
+		#search_addr {
+			display: block;
+			max-height: 200px;
+			overflow-y: scroll;
+		}
+		
+		.crim-select .crim-select-result {
+			background: #fbfbfb;
+			color: #999999;
+			border: 1px #ededed solid;
+			letter-spacing: -0.7px;
+			border-top: 0;
+			display: none;
+		}
+		
+		.crim-select.active .crim-select-result {
+			display: block;
+			max-height: 300px;
+			overflow-y: auto;
+			margin-bottom:15px;
+		}
+		
+		.crim-select .result-item {
+			font-size:18px;
+			padding: 7px 21px;
+			cursor: pointer;
+		}
+		
+		.crim-select .result-item:hover {
+			background-color: #ececec;
+		}
+			  
+	  </style>
+  	  </th:block>
+	  <!-- Content Wrapper. Contains page content -->
+	  <div class="content-wrapper" layout:fragment="content">
+	    <!-- Main content -->
+	    <section class="content">
+	      <div class="container-fluid">
+	        <!-- Main row -->
+	       <div class="row">
+		          <div class="col-md-12">
+		            <!-- general form elements -->
+		            <div class="card card-primary">
+		              <div class="card-header">
+		                <h3 class="card-title">네이게이션</h3>
+		              </div>
+		              <!-- /.card-header -->
+		              <!-- form start -->
+		              <form role="form">
+		                <div class="card-body">
+		                   <div class="form-group">
+		               		  <div class="crim-select">
+		               		  		<label for="RoadAddr">주소 검색</label>
+			                   		<input type="text" class="form-control" id="search_addr" placeholder="도로명주소, 건물명 또는 지번입력(검색어 예 : 도로명(반포대로 58), 건물명(독립기념관), 지번(삼성동 25))" style="margin-bottom: 0px;">
+									<div id="addr_list" class="crim-select-result"></div>
+								</div>
+			                </div>
+		                   <div class="form-group">
+			                 <label for="RoadAddr">주소</label>
+			                 <input type="text" class="form-control" id="RoadAddr" name="RoadAddr" >
+			               </div>
+		                  <div class="form-group">
+		                    <label for="AddrDetail">상세 주소</label>
+		                    <input type="text" class="form-control" id="AddrDetail" name="AddrDetail" >
+		                  </div>
+		                </div>
+		                <!-- /.card-body -->
+		
+		                <div class="card-footer">
+		                  <button type="button" class="btn btn-primary" style="float: right;padding: 11px;" onclick="UserSave();">검</button>
+		                  <a id="navi" href="#" onclick="navi();">
+					        <img src="//developers.kakao.com/assets/img/about/buttons/navi/kakaonavi_btn_medium.png"/>
+					    </a>
+		                </div>
+		              </form>
+		            </div>
+		            <!-- /.card -->
+		          </div>
+		          <!--/.col (left) -->
+		      </div>
+		      <!-- /.row -->
+	      </div><!-- /.container-fluid -->
+	    </section>
+	    <!-- /.content -->
+	    
+	    
+	 </div>
+	<th:block layout:fragment="script">
+		<!-- Bootstrap 4 -->
+		<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<!-- AdminLTE App -->
+		<script src="/dist/js/adminlte.min.js"></script>
+		<!-- AdminLTE for demo purposes -->
+		<script src="/dist/js/demo.js"></script>
+		<script th:src="${#tck.getVersion('/js/searchAddr.js')}"></script>
+		<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+		  <script type='text/javascript'>
+     	 	//<![CDATA[
+	        // 사용할 앱의 JavaScript 키를 설정해 주세요.
+	        var AppKey = '40d083a458c29085c64c1ed26571af36';
+	        Kakao.init(AppKey);
+	        
+	        TckJS_Addr.SetSearchEl($("#search_addr")[0], $("#addr_list")[0], function (juso_detail) {
+	            var data = TckJS_Addr.juso_data[$(juso_detail).data("id")];
+
+	            TckJS_Addr.juso_data = undefined;
+	            TckJS_Addr.checkKeyword = undefined;
+
+	            $("#RoadAddr").val(data.roadAddr);
+	            $("#zipCode").val(data.zipNo);
+	            $("#addr_list").hide();
+	            $("#search_addr").val("");
+	            $("#AddrDetail").focus();
+
+	        });
+	        
+	        function navi(){
+	              Kakao.Navi.start({
+	            name: "TCK 본사 21층",
+	            x: 126.9678832,
+	            y: 37.5401704,
+	            coordType: 'wgs84'
+	        });
+	      }
+	        
+      //]]>
+
+    </script>
+	</th:block>
+	
+</body>
+</html>

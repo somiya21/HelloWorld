@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="layout/default">
+<body>
+	  <th:block layout:fragment="css">
+	  <!-- DataTables -->
+  	  <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
+  	  <style>
+  	    .form-group{ margin-bottom:5px; }
+  	    .col-sm-12{overflow-y: auto;}
+  	  	.profile_image{ display:none; }
+  	  	.profile_view { 
+  	  		display:none;
+	    	cursor: pointer;
+		    color: chocolate;
+		    font-weight: bold;
+  	  	 } 
+  	  </style>
+  	  </th:block>
+	  <!-- Content Wrapper. Contains page content -->
+	  <div class="content-wrapper" layout:fragment="content">
+	    <!-- Main content -->
+	    <section class="content">
+	      <div class="container-fluid">
+	        <!-- Main row -->
+	       <div class="row">
+		       <div class="col-8">
+			          <div class="card">
+			            <div class="card-header">
+			              <h3 class="card-title">
+			              	싱크 회원 리스트
+			              	<a href="https://developers.kakao.com/docs/sync" target="_blank">설명</a><br/>
+			               </h3>
+			            </div>
+			            <!-- /.card-header -->
+			            <div class="card-body" style="min-height:1045px;">
+			              <table id="userList" class="table table-bordered table-striped" style="overflow: auto;">
+			                <thead>
+				                <tr>
+				                  <th>고유아이디</th>
+				                  <th>카카오계정(이메일)</th>
+				                  <th>연락처</th>
+				                  <th>프로필이미지</th>
+				                  <th>닉네임</th>
+				                  <th>성별</th>
+				                  <th>연령</th>
+				                  <th>생년</th>
+				                  <th>생일</th>
+				                  <th>CI</th>
+				                  <th>ci_authenticated_at</th>
+				                  <th>등록일</th>
+				                  <th>수정일</th>
+				                </tr>
+			                </thead>
+			              </table>
+			            </div>
+			            <!-- /.card-body -->
+			          </div>
+			          <!-- /.card -->
+			        </div>
+			        <!-- /.col -->
+	       
+	       
+		          <div class="col-md-4">
+		            <!-- general form elements -->
+		            <div class="card card-primary">
+		              <div class="card-header">
+		                <h3 class="card-title">싱크 연동</h3>
+		              </div>
+		              <!-- /.card-header -->
+		              <!-- form start -->
+		              <form role="form">
+		                <div class="card-body">
+		                  <div class="form-group">
+		                    <label for="id">고유아이디(id)</label>
+		                    <input type="text" class="form-control" id="id" name="id" readonly>
+		                  </div>
+		                  <div class="form-group">
+		                    <label for="ci">암호화된 이용자 확인값(ci)</label>
+		                    <input type="text" class="form-control" id="ci" name="ci" readonly>
+		                  </div>
+		                  <div class="form-group">
+		                    <label for="gender">성별</label>
+		                    <input type="text" class="form-control" id="gender" name="gender" readonly>
+		                  </div>
+		                  <div class="form-group">
+		                    <label for="age_range">연령</label>
+		                    <input type="text" class="form-control" id="age_range" name="age_range" readonly>
+		                  </div>
+		                  <div class="form-group">
+		                    <label for="birthyear">생년</label>
+		                    <input type="text" class="form-control" id="birthyear" name="birthyear" readonly>
+		                  </div>
+		                  <div class="form-group">
+		                    <label for="birthday">생일</label>
+		                    <input type="text" class="form-control" id="birthday" name="birthday" readonly>
+		                  </div>
+		                  <div class="form-group">
+		                    <label for="email">카카오계정(이메일)</label>
+		                    <input type="text" class="form-control" id="email" name="email" readonly>
+		                  </div>
+		                  <div class="form-group">
+		                    <label for="phone_number">연락처</label>
+		                    <input type="text" class="form-control" id="phone_number" name="phone_number" readonly>
+		                  </div>
+		                  <div class="form-group">
+		                    <label for="phone_number">ci_authenticated_at</label>
+		                    <input type="text" class="form-control" id="ci_authenticated_at" name="ci_authenticated_at" readonly>
+		                  </div>
+		                  <div class="form-group">
+		                    <label for="nickname">닉네임</label>
+		                    <input type="text" class="form-control" id="nickname" name="nickname" readonly>
+		                  </div>
+		                  <div class="form-group">
+		                    <label for="nickname">프로필 이미지</label><br/>
+		                    [thumbnail_image]  <br/>
+		                    <span class="profile_view" id="thumbnail_view" onclick="$('#thumbnail_image').show();$('#thumbnail_view').hide();">보기</span>  <br/>
+		                    <img class="profile_image" id="thumbnail_image"  /><br/>
+            				[profile_image]<br/>
+            				
+            				<span class="profile_view" id="profile_view" onclick="$('#profile_image').show();$('#profile_view').hide();">보기</span>  <br/>
+            				<img class="profile_image" id="profile_image" /><br/>
+		                  </div>
+		                </div>
+		                <!-- /.card-body -->
+		
+		                <div class="card-footer">
+		                  <a id="kakao-login-btn"></a>
+		                  <button type="button" class="btn btn-primary" style="float: right;padding: 11px;" onclick="UserSave();">사용자 저장</button>
+		                </div>
+		              </form>
+		            </div>
+		            <!-- /.card -->
+		          </div>
+		          <!--/.col (left) -->
+		      </div>
+		      <!-- /.row -->
+	      </div><!-- /.container-fluid -->
+	    </section>
+	    <!-- /.content -->
+	    
+	    
+	 </div>
+	<th:block layout:fragment="script">
+		<!-- Bootstrap 4 -->
+		<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<!-- DataTables -->
+		<script src="/plugins/datatables/jquery.dataTables.js"></script>
+		<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+		<!-- AdminLTE App -->
+		<script src="/dist/js/adminlte.min.js"></script>
+		<!-- AdminLTE for demo purposes -->
+		<script src="/dist/js/demo.js"></script>
+		<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+		  <script type='text/javascript'>
+     	 	//<![CDATA[
+     		 var table = $('#userList').DataTable({
+     		     ajax: {
+     		        'url':'/kakaoSync/ajax/user/list', 
+     		        'type': 'POST',
+     		        'dataSrc':''
+     		     },
+     		    columns: [
+     		        {"data": "id"},
+     		        {"data": "email"},
+     		        {"data": "phone_number"},
+     		       	{"data": "thumbnail_image", "render": function(data, type, row){
+     	                if(type=='display'){
+     	                	if(data == null){
+     	                		data = "이미지 없음";
+     	                	}else {
+     	                		data = '<img src="'+ data + '"/>';	
+     	                	}
+     	                    
+     	                }
+     	                return data;
+     	            }},
+     		        {"data": "nickname"},
+     		       	{"data": "gender"},
+     		        {"data": "age_range"},
+     		        {"data": "birthyear"},
+     		        {"data": "birthday"},
+     		       {"data": "ci"},
+       		        {"data": "ci_authenticated_at"},
+	    		    {"data": "reg_dt"},
+     		        {"data": "upt_dt"}
+     		    ]
+     		});
+     		 
+     		var user = {};
+	        // 사용할 앱의 JavaScript 키를 설정해 주세요.
+	        var AppKey = 'e2d5838549c6053bb1a3ef482efcb618';
+	        Kakao.init(AppKey);
+	        // 카카오 로그인 버튼을 생성합니다.
+	        Kakao.Auth.createLoginButton({
+	          container: '#kakao-login-btn',
+	          success: function(authObj) {
+	            // 로그인 성공시, API를 호출합니다.
+	              var property_keys = [""]
+	             Kakao.API.request({
+	              url: '/v2/user/me',
+	              success: function(res) {
+	                  document.getElementById("id").value = res.id;
+	                  document.getElementById("nickname").value = res.properties.nickname;
+	                  document.getElementById("profile_image").src = res.properties.profile_image;
+	                  document.getElementById("thumbnail_image").src = res.properties.thumbnail_image;
+	                  $(".profile_view").show();
+	                  
+	                  user["id"] = res.id;
+	                  user["nickname"] = res.properties.nickname;
+	                  user["profile_image"] = res.properties.profile_image;
+	                  user["thumbnail_image"] = res.properties.thumbnail_image;
+	
+	                  var kakao_account = res.kakao_account;
+	                  if(kakao_account){
+	                      //age_range: "30~39"
+	                      if(kakao_account.age_range){
+	                        user["age_range"] = kakao_account.age_range;
+	                        document.getElementById("age_range").value = kakao_account.age_range;
+	                      }
+	                      //birthday: "1117"
+	                      if(kakao_account.birthday) {
+	                        user["birthday"] = kakao_account.birthday;
+	                        document.getElementById("birthday").value = kakao_account.birthday;
+	                      }
+	
+	                      //email: "poixgks@naver.com"
+	                      if(kakao_account.email) {
+	                         user["email"] = kakao_account.email;
+	                         document.getElementById("email").value = kakao_account.email;
+	                      }
+	                      //gender: "male"
+	                      if(kakao_account.gender){
+	                        user["gender"] = kakao_account.gender;
+	                        document.getElementById("gender").value = kakao_account.gender;
+	                      }
+	                      /* 싱크 추가 데이터 */
+	                      if(kakao_account.ci){
+		                        user["ci"] = kakao_account.ci;
+		                        document.getElementById("ci").value = kakao_account.ci;
+		                  }
+	                      if(kakao_account.birthyear){
+		                        user["birthyear"] = kakao_account.birthyear;
+		                        document.getElementById("birthyear").value = kakao_account.birthyear;
+		                  }
+	                      if(kakao_account.phone_number){
+		                        user["phone_number"] = kakao_account.phone_number;
+		                        document.getElementById("phone_number").value = kakao_account.phone_number;
+		                  }
+	                      if(kakao_account.ci_authenticated_at){
+		                        user["ci_authenticated_at"] = kakao_account.ci_authenticated_at;
+		                        document.getElementById("ci_authenticated_at").value = kakao_account.ci_authenticated_at;
+		                  }
+	                      /* 싱크 추가 데이터 종료 */
+	                  }
+	              },
+	              fail: function(error) {
+	                alert(JSON.stringify(error));
+	              }
+	            });
+	          },
+	          fail: function(err) {
+	            alert(JSON.stringify(err));
+	          }
+	        });
+	
+	     function UserSave() {
+	    	 TckJS.Ajax.postAjaxLoding("/kakaoSync/ajax/user/insert", user, function (res) {
+                 alert("저장 되었습니다.");
+                 location.reload();
+             })
+	     }
+      //]]>
+
+    </script>
+	</th:block>
+	
+</body>
+</html>

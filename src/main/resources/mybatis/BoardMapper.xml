@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.BoardMapper">
+
+
+	<!-- 글쓰기 -->
+	<insert id="writeCotent" keyProperty="content_no">
+		insert into content(content_title,content_text,content_writedate,content_views) values(
+			#{content_title},
+			#{content_text},
+			now(),
+			0
+		)
+	</insert>
+
+	<!-- 글보기 -->
+	<select id="selectAllContent" resultType="Board">
+		select * 
+		from content
+		ORDER BY content_no DESC
+	</select>
+
+	
+	<!-- 글수정 -->
+	<update id="updateContent">
+		update content 
+		set content_title=#{content_title} , content_text=#{content_text} 
+		where content_no=#{content_no}
+	</update>
+	
+	<!-- 글삭제 -->
+	<delete id="deleteContent">
+		delete from content 
+		where content_no=#{content_no}	
+	</delete>
+
+</mapper>
